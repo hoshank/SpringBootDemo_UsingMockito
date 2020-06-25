@@ -26,5 +26,11 @@ public class UserServiceMockitoTest {
     void contextLoads() {
     }
 
-
+    @Test
+    public void givenRequest_WhenGetResponse_ShouldReturnUserDetailsList() {
+        userDTO = new UserDto("plk", "pwd");
+        when(repository.save(any())).thenReturn(new User());
+        String msg = userService.updateUser(userDTO);
+        Assert.assertEquals("Login successfull", msg);
+    }
 }
