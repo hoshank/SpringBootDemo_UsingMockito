@@ -47,9 +47,5 @@ public class UserServiceMockitoTest {
         when(repository.save(user)).thenReturn(user);
         User addUser = userService.addUser(userDTO);
         Assert.assertEquals(user.getUserName(),addUser.getUserName());
-        //  Assert.assertEquals(user.getUserName(),userService.addUser(userDTO).getUserName());
-
-
-
     }
 }

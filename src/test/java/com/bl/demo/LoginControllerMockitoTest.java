@@ -14,26 +14,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
+
 @SpringBootTest
 public class LoginControllerMockitoTest {
 
-        @Mock
-        IUserService service;
-        @Autowired
-        LoginController userController;
+    @Mock
+    IUserService service;
+    @Autowired
+    LoginController userController;
 
-        List<User> userList = new ArrayList<>();
-        UserDto userDTO;
+    List<User> userList = new ArrayList<>();
+    UserDto userDTO;
 
-        @Test
-        void contextLoads() {
-        }
+    @Test
+    void contextLoads() {
+    }
 
-        @Test
-        void givenRequestToAddUser_WhenGetAdded_ShouldReturnCorrectMessage() {
-            userDTO = new UserDto("plkk", "pwdd");
-            when(service.updateUser(userDTO)).thenReturn("Login Successfull");
-            String msg = service.updateUser(userDTO);
-            Assert.assertEquals("Login Successfull",msg);
-        }
+    //TC to check if login is successfull or not
+    @Test
+    void givenRequestToAddUser_WhenGetAdded_ShouldReturnCorrectMessage() {
+        userDTO = new UserDto("plkk", "pwdd");
+        when(service.updateUser(userDTO)).thenReturn("Login Successfull");
+        String msg = service.updateUser(userDTO);
+        Assert.assertEquals("Login Successfull", msg);
+    }
+
+    //TC to check if registration is done
+    @Test
+    public void givenRequestToAddUser_ShouldAddUser() {
+        userDTO = new UserDto("Palakk", "plk@16");
+        User user = new User(userDTO);
+        userList.add(user);
+        when(service.addUser(userDTO)).thenReturn(user);
+        User addUser = service.addUser(userDTO);
+        Assert.assertEquals(user.getUserName(), addUser.getUserName());
+    }
 }
