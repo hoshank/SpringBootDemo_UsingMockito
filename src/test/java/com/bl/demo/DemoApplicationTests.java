@@ -14,16 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 class DemoApplicationTests {
-    private MockMvc mockMvc;
-    @Autowired
-    IUserService loginService;
-
-    @MockBean
-    UserRepository loginRepository;
-
     @Test
     void contextLoads() {
     }
-
-
 }

@@ -1,5 +1,8 @@
 package com.bl.demo.dto;
 
+/**
+ * purpose:takes the input from controller and is passed to service layer
+ */
 public class UserDto {
 
     public String userName;

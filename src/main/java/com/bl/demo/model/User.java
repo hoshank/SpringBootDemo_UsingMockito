@@ -1,8 +1,10 @@
 package com.bl.demo.model;
+/**
+ * purpose:entity on which the operation is performed
+ */
 
 import com.bl.demo.dto.UserDto;
 import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 @Entity

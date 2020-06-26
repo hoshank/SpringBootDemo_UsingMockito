@@ -1,4 +1,7 @@
 package com.bl.demo;
+/**
+ * purpose:mock the repository layer that the service is dependant on.
+ */
 
 import com.bl.demo.dto.UserDto;
 import com.bl.demo.model.User;
@@ -31,21 +34,26 @@ public class UserServiceMockitoTest {
     void contextLoads() {
     }
 
+    /**
+     * purpose: validate successfull login
+     */
     @Test
     public void givenRequest_WhenGetResponse_ShouldReturnUserDetailsList() {
         userDTO = new UserDto("plk", "pwd");
         when(repository.save(any())).thenReturn(new User());
-        String msg = userService.updateUser(userDTO);
+        String msg = userService.loginUser(userDTO);
         Assert.assertEquals("Login successfull", msg);
     }
-
+    /**
+     * purpose: validate wrong credentials
+     */
     @Test
     public void givenRequestToAddUser_ShouldAddUser(){
         userDTO=new UserDto("Palakk","plk@16");
         User user = new User(userDTO);
         userList.add(user);
         when(repository.save(user)).thenReturn(user);
-        User addUser = userService.addUser(userDTO);
+        User addUser = userService.registerUser(userDTO);
         Assert.assertEquals(user.getUserName(),addUser.getUserName());
     }
 }

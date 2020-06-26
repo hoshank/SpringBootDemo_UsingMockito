@@ -1,4 +1,8 @@
 package com.bl.demo;
+/**
+ * purpose:Mocking database layer
+ * Author:Plk
+ */
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,17 +31,28 @@ public class UserControllerMockTest {
     @Autowired
     private WebApplicationContext wac;
 
+    /**
+     * Initializes the mockMvc
+     */
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-
     }
 
+    /**
+     * purpose:checks the number of rows in database
+     * @throws Exception
+     */
     @Test
     public void verifyAllUserList() throws Exception {
         mockMvc.perform(get("/user/display").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(9))).andDo(print());
     }
+
+    /**
+     * purpose:check the fields if present in database
+     * @throws Exception
+     */
     @Test
     public void verifyUserById() throws Exception {
         mockMvc.perform(get("/user/display")).andExpect(status().isOk())
@@ -46,5 +61,4 @@ public class UserControllerMockTest {
                 .andExpect(jsonPath("[4].userName").exists())
                 .andDo(print());
     }
-
 }
