@@ -24,11 +24,6 @@ class DemoApplicationTests {
     @Test
     void contextLoads() {
     }
-   /* @Test
-    public void saveUser(){
-        User user=new User("plk","passwd");
-        when(loginRepository.save(user)).thenReturn(user);
-        Assert.assertEquals(user,loginService.addUser(user));
-    }*/
+
 
 }
