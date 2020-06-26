@@ -21,5 +21,10 @@ public class UserService implements IUserService {
         return "invalid details";
     }
 
+    @Override
+    public User addUser(UserDto userDto) {
+        User user = new User(userDto);
+        return userRepository.save(user);
+    }
 
 }

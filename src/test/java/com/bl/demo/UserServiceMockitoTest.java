@@ -10,6 +10,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -21,6 +24,8 @@ public class UserServiceMockitoTest {
     IUserService userService;
 
     UserDto userDTO;
+    List<User> userList = new ArrayList<>();
+
 
     @Test
     void contextLoads() {
@@ -32,5 +37,19 @@ public class UserServiceMockitoTest {
         when(repository.save(any())).thenReturn(new User());
         String msg = userService.updateUser(userDTO);
         Assert.assertEquals("Login successfull", msg);
+    }
+
+    @Test
+    public void givenRequestToAddUser_ShouldAddUser(){
+        userDTO=new UserDto("Palakk","plk@16");
+        User user = new User(userDTO);
+        userList.add(user);
+        when(repository.save(user)).thenReturn(user);
+        User addUser = userService.addUser(userDTO);
+        Assert.assertEquals(user.getUserName(),addUser.getUserName());
+        //  Assert.assertEquals(user.getUserName(),userService.addUser(userDTO).getUserName());
+
+
+
     }
 }
