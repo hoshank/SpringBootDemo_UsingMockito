@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -34,15 +35,19 @@ public class UserServiceMockitoTest {
     void contextLoads() {
     }
 
+
+
     /**
      * purpose: validate successfull login
      */
     @Test
-    public void givenRequest_WhenGetResponse_ShouldReturnUserDetailsList() {
-        userDTO = new UserDto("plk", "pwd");
-        when(repository.save(any())).thenReturn(new User());
-        String msg = userService.loginUser(userDTO);
-        Assert.assertEquals("Login successfull", msg);
+    public void givenWrongRequest_WhenGetResponse_ShouldReturnUserDetailsList() {
+        userDTO = new UserDto("tanu", "kanu");
+        User user = new User(userDTO);
+        when(repository.save(any())).thenReturn(user);
+        Optional<User> userOptional = userService.loginUser(userDTO);
+        Assert.assertEquals(user.getUserName(),userOptional.get().getUserName());
+
     }
     /**
      * purpose: validate wrong credentials

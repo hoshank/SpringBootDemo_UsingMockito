@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -35,13 +38,14 @@ public class LoginControllerMockitoTest {
      * TC to check if login is successfull or not
      */
     @Test
-    void givenRequestToAddUser_WhenGetAdded_ShouldReturnCorrectMessage() {
-        userDTO = new UserDto("plkk", "pwdd");
-        when(service.loginUser(userDTO)).thenReturn("Login Successfull");
-        String msg = service.loginUser(userDTO);
-        Assert.assertEquals("Login Successfull", msg);
-    }
+    public void givenWrongRequest_WhenGetResponse_ShouldReturnUserDetailsList() {
+        userDTO = new UserDto("tanu", "kanu");
+        User user = new User(userDTO);
+        when(service.loginUser(any())).thenReturn(Optional.of(user));
+        Optional<User> userOptional = service.loginUser(userDTO);
+        Assert.assertEquals(user.getUserName(),userOptional.get().getUserName());
 
+    }
     /**
      * TC to check if registration is done
      */
