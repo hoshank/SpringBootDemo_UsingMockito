@@ -1,5 +1,8 @@
 package com.bl.demo.model;
 
+/**
+ * purpose:provide custom response with data,message,and statusCode
+ */
 public class Response {
     String message;
     Object data;

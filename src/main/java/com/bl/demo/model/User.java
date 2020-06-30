@@ -7,27 +7,22 @@ import com.bl.demo.dto.UserDto;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
+
+
 @Entity
 @Table
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
-    public String userName;
-    public String password;
-    @CreationTimestamp
-    private Timestamp registrationDate;
 
+    @NotEmpty(message = "Cannot be empty!")
+    String userName;
 
-    public User(UserDto userDto) {
-        userName = userDto.userName;
-        password = userDto.password;
-    }
-
-    public User(String name, String pwd) {
-        userName=name;
-        password=pwd;
-    }
+    @NotEmpty(message = "Password is mandatory")
+    String password;
 
     public Timestamp getRegistrationDate() {
         return registrationDate;
@@ -37,7 +32,15 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
+    @CreationTimestamp
+    private Timestamp registrationDate;
+
     public User() {
+    }
+
+    public User(UserDto userDto) {
+        userName = userDto.userName;
+        password = userDto.password;
     }
 
     public Integer getId() {
@@ -52,15 +55,16 @@ public class User {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userName, user.userName) &&
+                Objects.equals(password, user.password);
     }
 }

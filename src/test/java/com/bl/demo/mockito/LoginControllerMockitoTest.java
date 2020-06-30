@@ -1,80 +1,62 @@
 package com.bl.demo.mockito;
+/**
+ * purpose:mock the service layer that the controller is dependant on
+ */
 
 import com.bl.demo.controller.LoginController;
+import com.bl.demo.dto.UserDto;
 import com.bl.demo.model.User;
 import com.bl.demo.service.IUserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
+import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@WebMvcTest(LoginController.class)
+@SpringBootTest
 public class LoginControllerMockitoTest {
-    @Autowired
-    MockMvc mockmvc;
 
+    @Mock
+    IUserService service;
     @Autowired
-    ObjectMapper mapper;
+    LoginController userController;
 
-    @MockBean
-    IUserService userService;
-/*
+    List<User> userList = new ArrayList<>();
+    UserDto userDTO;
+
     @Test
-    void getAllUsers_ReturnsOK_WithListOfUsers() throws Exception {
-        List<User> userList = new ArrayList<>();
-        // Response response=new Response
-        User user = new User();
-        user.setId(2);
-        user.setUserName("Plk");
-        user.setPassword("Plkk");
+    void contextLoads() {
+    }
+
+    /**
+     * TC to check if login is successfull or not
+     */
+    @Test
+    public void givenCorrectLoginRequest_WhenGetResponse_ShouldReturnUserDetailsList() {
+        userDTO = new UserDto("tanu", "kanu");
+        User user = new User(userDTO);
+        when(service.loginUser(any())).thenReturn(Optional.of(user));
+        Optional<User> userOptional = service.loginUser(userDTO);
+        Assert.assertEquals(user.getUserName(),userOptional.get().getUserName());
+
+    }
+    /**
+     * TC to check if registration is done
+     */
+
+    @Test
+    public void givenRequestToAddUser_ShouldAddUser() {
+        userDTO = new UserDto("Palakk", "plk@16");
+        User user = new User(userDTO);
         userList.add(user);
-
-        Mockito.when(userService.getAllUser()).thenReturn(userList);
-
-        mockmvc.perform(MockMvcRequestBuilders.get("/login/get").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
-
-    }*/
-
-/*    @Test
-    public void should_GetAccount_When_ValidRequest() throws Exception {
-
-        *//* setup mock *//*
-        User user = new User("plk", "pwd");
-        when(userService.getAllUser()).thenReturn(user);
-        mockmvc.perform((RequestBuilder) get("/login/get")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.userName").value("plk"))
-                .andExpect(jsonPath("$.password").value("pwd"))
-                .andExpect(jsonPath("$.id").value(5));
-    }*/
-   /* @Test
-    public void should_CreateAccount_When_ValidRequest() throws Exception {
-
-        when(userService.addUser(any(UserDTO.class))).thenReturn(new User());
-        mockmvc.perform(post("/login/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ "userName":"plk" ,"password":"plkk" }")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(header().string("Location", "/api/login/1"))
-                .andExpect(jsonPath("$.userName").value("PLK"))
-                .andExpect(jsonPath("$.password").value("plkk"));
-
-    }*/
+        when(service.registerUser(userDTO)).thenReturn(user);
+        User addUser = service.registerUser(userDTO);
+        Assert.assertEquals(user.getUserName(), addUser.getUserName());
+    }
 }

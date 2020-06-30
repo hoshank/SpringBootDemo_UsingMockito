@@ -40,8 +40,11 @@ public class UserService implements IUserService {
 
     @Override
     public User registerUser(UserDto userDto) {
+        Optional<User> user1 = userRepository.findByUserNameAndPassword(userDto.getUserName(), userDto.getPassword());
+        if (user1.isPresent()) {
+            throw new UserExceptions("Id or name already present");
+        }
         User user = new User(userDto);
         return userRepository.save(user);
     }
-
 }
